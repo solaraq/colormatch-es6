@@ -15,7 +15,8 @@ export default class StopWatch {
         this.clockTimer = setInterval((StopWatch) => {
             let current = Date.now();
             StopWatch.timeLeft =  Math.round((StopWatch.duration - (current - start))/1000);
-            StopWatch.seconds = String(StopWatch.timeLeft%60).padStart(2,'0');
+            StopWatch.seconds = String(StopWatch.timeLeft%60);
+            StopWatch.seconds = (StopWatch.seconds.length === 1 ? ('0' + StopWatch.seconds) : StopWatch.seconds);
             StopWatch.minutes = Math.floor(StopWatch.timeLeft/60);
         }, 950, this);
     }
