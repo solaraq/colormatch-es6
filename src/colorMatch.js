@@ -6,28 +6,28 @@ import * as MessageBox from './MessageBox.js';
 import StopWatch from './StopWatch.js';
 
 // Holds a reference to the game board dom element
-var gameBoard = null;
+let gameBoard;
 
 // Holds the timer id for the current game
-let gameTimer = null;
+let gameTimer;
 
 // Holds the timer id for the clock
-let clockTimer = null;
+let clockTimer;
 
 // Holds timer id for automated test
-let testTimer = null;
+let testTimer;
 
 // Stores sequential index for table cells
 let tableCellIndex = [];
 
 // Holds a reference to the vertical cells input element
-var verticalInputField = null;
+let verticalInputField;
 
 // Holds a reference to the horizontal cells input element
-let horizontalInputField = null;
+let horizontalInputField;
 
 // Holds a reference to the time input element
-let timeInputField = null;
+let timeInputField;
 
 // Holds values entered for the game
 let gameData = {
@@ -35,9 +35,6 @@ let gameData = {
     columns: 0,
     time: 0
 };
-
-// Reference to the custom popup
-//var messageBox = null;
 
 // Messages to display in popup
 let messages = {
@@ -48,7 +45,7 @@ let messages = {
 /**
  * Simulate game by generating random cell clicks.
  */
-var runTest = () => {
+const runTest = () => {
     testTimer = setInterval(() => {
         let index = getRandomIndex(1, gameData.rows * gameData.columns);
         let cell = tableCellIndex[index];
@@ -60,14 +57,14 @@ var runTest = () => {
 /**
  *  Assert cell has expected class.
  */
-var assertCellStateOn = (cell, expected) => {
+const assertCellStateOn = (cell, expected) => {
     return cell.className === expected;
 }
 
 /**
  * assert initial cel state of game board.
  */
-var assertInitialBoardState = () => {
+const assertInitialBoardState = () => {
 
     let board = document.querySelector('table#board');
     let rows = board.rows.length-1;
@@ -99,7 +96,7 @@ var assertInitialBoardState = () => {
  * @param {Number} max Maximum number to generate
  * @return {Number}
  */
-var getRandomIndex =  (min, max) => {
+const getRandomIndex =  (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -111,7 +108,7 @@ var getRandomIndex =  (min, max) => {
  * @param {Number} rows Number of rows
  * @param {Number} cols Number of columns
  */
-var renderTable = (rows, cols) => {
+const renderTable = (rows, cols) => {
 
     let fragment = document.createDocumentFragment();
     let  index = 1;
@@ -138,7 +135,7 @@ var renderTable = (rows, cols) => {
  * @param {Number} index Index of cell clicked
  * @param {Object} currentCell The cell clicked
  */
-var setRowCells = (row, index, currentCell) => {
+const setRowCells = (row, index, currentCell) => {
     let cell = currentCell || $('td:nth-child(' + index + ')', row);
     cell.toggleClass( "on" );
     if (cell.prev().prop("tagName") === 'TD') {
@@ -154,7 +151,7 @@ var setRowCells = (row, index, currentCell) => {
  *
  * @param {Object} cell The cell clicked
  */
-var setAdjacentCells = (cell) =>  {
+const setAdjacentCells = (cell) =>  {
     let cellIndex = cell.cellIndex + 1;
     let currentRow = $(cell).parent();
     setRowCells(currentRow, cellIndex, $(cell));
@@ -171,7 +168,7 @@ var setAdjacentCells = (cell) =>  {
  *
  * @param {Object} cell The cell clicked
  */
-var onCellClick = (cell) => {
+const onCellClick = (cell) => {
     setAdjacentCells(cell);
     if (isWinner()) {
         clearTimeout(gameTimer);
@@ -185,7 +182,7 @@ var onCellClick = (cell) => {
  *
  * @param {Number} time The time in seconds
  */
-var initTimer = (time) => {
+const initTimer = (time) => {
 
     let clock = $('#clock');
     let stopWatch = new StopWatch({
@@ -195,7 +192,7 @@ var initTimer = (time) => {
     stopWatch.start();
 
     clockTimer = setInterval(function() {
-        var time = stopWatch.getTimeLeft();
+        let time = stopWatch.getTimeLeft();
         clock.text(`${time.minutes}:${time.seconds}`);
     }, 950);
 }
@@ -203,7 +200,7 @@ var initTimer = (time) => {
 /**
  *  Check if game is won.
  */
-var isWinner = () => {
+const isWinner = () => {
     let cellStateCount = $('td.on', gameBoard).length;
     return cellStateCount === 0 || cellStateCount === (tableCellIndex.length - 1);
 }
@@ -211,7 +208,7 @@ var isWinner = () => {
 /**
  * Check imput data is valid.
  */
-var isValidForm = (gameData) => {
+const isValidForm = (gameData) => {
     return gameData.rows > 0 && gameData.columns > 0 && gameData.time > 0;
 }
 
@@ -223,7 +220,7 @@ var isValidForm = (gameData) => {
  *  @config {Number} The number of columns
  *  @config {Number} The time
  */
-var getFormData = () => {
+const getFormData = () => {
     gameData.rows = Math.round(Number(verticalInputField.value));
     gameData.columns = Math.round(Number(horizontalInputField.value));
     gameData.time = Math.round(Number(timeInputField.value)) * 1000;
@@ -238,7 +235,7 @@ var getFormData = () => {
  * @param {Number} cols The number of columns
  * @param {Number} time The time
  */
-var onGameStart = (rows, cols, time) => {
+const onGameStart = (rows, cols, time) => {
 
     document.querySelector('#message').innerHTML = '';
 
@@ -266,7 +263,7 @@ var onGameStart = (rows, cols, time) => {
 /**
  * On game end handler.
  */
-var onGameEnd = () => {
+const onGameEnd = () => {
     $(gameBoard).off();
     clearInterval(clockTimer);
     clearInterval(testTimer);
@@ -278,7 +275,7 @@ var onGameEnd = () => {
 /**
  * Initialise game app.
  */
-var init = () => {
+const init = () => {
 
     MessageBox.init();
     //this.messageBox = MessageBox;
@@ -326,7 +323,7 @@ var init = () => {
 
 }
 
-export var initApp = () => {
+export const initApp = () => {
     init();
 };
 
