@@ -1,0 +1,22 @@
+{
+  "name": "colormatch",
+  "version": "1.0.0",
+  "description": "Color match game",
+  "main": "app.js",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.1.0",
+    "webpack-cli": "^2.0.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+      "dev": "webpack --mode development",
+      "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "colormatch-es6"
+  },
+  "author": "",
+  "license": "ISC"
+}
